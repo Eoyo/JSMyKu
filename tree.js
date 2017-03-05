@@ -1,3 +1,6 @@
+function isu(e){
+	return e==undefined||e==null;
+}
 class AVLNode{
 	constructor(v){
 		this.bf=0;
@@ -35,7 +38,7 @@ class AVLTree{
 				r.bf=-(u.bf>0);
 				p[sr]=u;	
 			}
-			t.bf=0;
+			p[sr].bf=0;
 			balance=true;
 		}
 		function roteL(p,sr){
@@ -55,7 +58,7 @@ class AVLTree{
 				l.bf=+(u.bf<0);
 				p[sr]=u;
 			}
-			t.bf=0;
+			p[sr].bf=0;
 			balance=true;
 		}
 		function adding(p,sr,v){
@@ -117,6 +120,123 @@ class AVLTree{
 		}
 		LNR(this.root);
 		return nodes;
+	}
+	del(v){
+		var result=true;
+		var balance=false;
+		var got=false;
+		function gettr(p){//默认是 中序遍历;
+			if(isu(p))return ;
+			var ret=gettr(p.lc);
+			if(!got&&!isu(p.v)){
+				got=true;
+				ret=p.v
+			}
+			return ret;
+		}
+		function rote(p,sr){
+			var t=p[sr];
+			var c;
+			switch(t.bf){
+				case 1:
+				c=t.lc;
+				switch(c.bf){
+					case 0:
+						t.lc=c.rc; c.rc=t;
+						c.bf=-1;
+						p[sr]=c;
+						break;
+					case 1:
+						t.lc=c.rc; c.rc=t;
+						c.bf=0; t.bf=0;
+						p[sr]=c;
+						break;
+					case -1:
+						var u=c.rc;
+						t.lc=u.rc;u.rc=t;
+						c.rc=u.lc;u.lc=c;
+						c.bf=+(u.bf<0);
+						t.bf=-(u.bf>0);
+						u.bf=0;
+						p[sr]=u;
+				}
+				break;
+				
+				case -1:
+				c=t.rc;
+				switch(c.bf){
+					case 0:
+						t.rc=c.lc; c.lc=t;
+						c.bf=1;
+						p[sr]=c;
+						break;
+					case -1:
+						t.rc=c.lc; c.lc=t;
+						c.bf=0; t.bf=0;
+						p[sr]=c;
+						break;
+					case 1:
+						var u=c.lc;
+						t.rc=u.lc;u.lc=t;
+						c.lc=u.rc;u.rc=c;
+						t.bf=+(u.bf<0);
+						c.bf=-(u.bf>0);
+						u.bf=0;
+						p[sr]=u;
+				}
+			}
+		}
+		function deling(p,sr,v){
+			var t=p[sr];
+			if(isu(t)){//利用回溯修改bf的值;
+				result=false;
+				balance=true;
+				return ;
+			}
+			var direc=+(t.v<v);
+			if(t.v==v){
+				switch(false){
+					case isu(t.lc)||isu(t.rc):
+					v=gettr(t.rc);
+					t.v=v;
+					direc=1;
+					break;
+					
+					case isu(t.rc):
+					p[sr]=t.rc;
+					result=true;
+					return ;
+					break;
+					
+					default:
+					p[sr]=null;
+					result=true;
+					return ;
+				}
+			}
+			switch(direc){
+				case 1:
+				deling(t,'rc',v);
+				if(balance)return;
+				switch(t.bf){
+					case -1:t.bf=0;break;
+					case 0:t.bf=1;balance=true;break;
+					case 1:rote(p,sr);break;
+				}
+				break;
+				
+				case 0:
+				deling(t,'lc',v);
+				if(balance)return;
+				switch(t.bf){
+					case -1:rote(p,sr);break;
+					case 0:t.bf=-1;balance=true;break;
+					case 1:t.bf=0;break;
+				}
+			}
+		}
+		deling(this,'root',v);
+		return result;
 	}
 }
 var avl=new AVLTree();
