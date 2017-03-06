@@ -20,7 +20,7 @@ class AVLTree{
 			var t=p[sr];
 			var r=t.rc;
 			if(r.bf==-1){//RR旋转,r上位;
-				t.lc=r.lc; r.lc=t;
+				t.rc=r.lc; r.lc=t;
 				t.bf=0;
 				p[sr]=r;
 			}
