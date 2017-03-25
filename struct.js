@@ -10,7 +10,6 @@ var List=function (){
 		this.data[this.length++]=ele;
 	}
 }
-
 var Node=function (ele){
 	this.ele=ele;
 	this.next=null;
@@ -120,26 +119,30 @@ function TiquDao(){
 	biaoji[5]=[0,1,0,1,1,0,0,0];
 	biaoji[6]=[0,1,1,1,1,0,0,0];
 	biaoji[7]=[0,0,0,1,1,1,1,1];
-	var k=2;
+	var k=1;
 	var height=biaoji.length;
 	var width=biaoji[0].length;
+	function isOut(i,j){
+		return (i<0||j<0)||(i>=height||j>=width);
+	}
 	function see(i,j){
-		if(biaoji[i][j]||(i<0||j<0)) return ;
+		if(isOut(i,j)||biaoji[i][j]) return ;
 		biaoji[i][j]=k;
 		see(i,j+1);
 		see(i+1,j);
 		see(i,j-1);
 		see(i-1,j);
 	}
-	for(var i=0,j=0;i<height;i++){
-		for(;j<width;j++){
+	for(var i=0;i<height;i++){
+		for(var j=0;j<width;j++){
 			if(biaoji[i][j]==0){
-				see(i,j);
 				k++;
+				see(i,j);
 			}
 		}
 	}
-	console.log(biaoji);
+	seearray(biaoji);
+	console.log(k);
 }
 //算法区
 //+++++搜索遍历
