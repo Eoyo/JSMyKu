@@ -117,34 +117,3 @@ var Graph=function(){//关联图,不多重;
 //mctup.see();
 //mmctup.see();
 
-class pp{
-	constructor(...args){
-		this.name="parent";
-		this.one=args[0];
-	}
-	psay(){
-		return this.name+"对象在此";
-	}
-}
-//pp.prototype 是只读的
-class Tp extends pp{
-	constructor(...args){
-		super(...args);
-		this.name="son";
-		this.tow=args[1];
-	}
-	say(){
-		return this.name+"对象在此";
-	}
-}
-function func(){
-} 
-func.prototype={
-	constructor:func,
-	getname:function (){
-		console.log (this.name);
-	},
-	name:"liumiao"
-}
-var tup=new func();
-console.log()

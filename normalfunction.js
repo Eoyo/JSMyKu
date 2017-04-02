@@ -1,6 +1,9 @@
-function isOut(i,j){
+/*//伪函数,写函数的模板;
+function isOut(i,j){ 
 		return (i<0||j<0)&&(i>=height||j>=width);
 }
+
+*/
 function seearray(arr){
 	var str="";
 	var len=arr.length;
@@ -64,7 +67,7 @@ function copyobj2(obj,co){//自属性拷贝
 	}
 	return co;
 }
-function Extend(obj,ext){// creatCopyObj extend
+function copyExtend(obj,ext){// creatCopyObj extend
 	var p;
 	if(obj==null){
 		return ;
@@ -171,7 +174,11 @@ function defineSubclass (superclass,ct, methods,statics){
 	ct.prototype = inherit(superclass.prototype); 
 			//创建了新对象继承superclass.prototype 即:  ct.prototype.__proto__-->superclass.prototype
 			//如下 重写了constructor,constructor被覆盖了;还得系统级 的访问__proto__才能找到superclass.prototype;
-	ct.prototype.constructor = ct;
+	ct.prototype.constructor=ct;
+	Object.defineProperty(ct.prototype,'constructor',{
+		enumerable:false,
+		writable:true	
+	});
 	if(methods) extend(ct.prototype,methods);
 	if(statics)	extend(ct,statics);
 	return ct;
@@ -180,6 +187,22 @@ function Pwakeup(par,son,...args){//模拟super 好不容易呀!!//前提是大�
 	par=Object.getPrototypeOf(par.prototype);//记录在每一层,传入的constructor;
 	par.constructor.apply(son,...args);		 //由其获得父原型 的constructor;
 }
+function getParent(son){
+	var par=Object.getPrototypeOf(son.prototype);
+	return par;
+}
 Function.prototype.extend = function (constructor,methods,statics){
 	return defineSubclass(this,constructor,methods,statics);
 }
+function create_proto(ct,ext){
+	var obj={};
+	obj.constructor=ct;
+	Object.defineProperty(obj,'constructor',{
+	//	enumerable:false, 默认为false;
+		writable:true,//默认为false
+		configurable:true		
+	});
+	extend(obj,ext);
+	return obj;
+}
+

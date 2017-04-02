@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<script src="normalfunction.js" type="text/javascript" charset="utf-8"></script>
+		<script src="line_struct.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+<script>
+//	var afa=[1,,5,7,11,13,17,19];//1 in afa;==>false;
+//	var js=new FilteredSet(
+//		function (x){
+//			return (typeof x =="number");
+//		},
+//		afa
+//	);
+//	js.add({});
+//	js.add("wefw");
+//	js.add(2343);
+//	js.add(23,32,23,{sd:'sd'});
+//	console.log(...js.toArray());
+	var afa=new TimeLink();
+	afa.add('head');
+	afa.add('231');
+	afa.add('235');
+	afa.add('tail');
+	afa.display();
+	afa.push('231');
+	afa.push('2');
+	afa.add('2');
+	afa.pop_oldest();
+	afa.pop_oldest();
+	afa.pop_oldest();
+	afa.push('234');
+	afa.display();
+</script>
+</html>
